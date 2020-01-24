@@ -12,7 +12,6 @@ from werkzeug.urls import url_parse
 @app.route('/index')
 @login_required
 def index():
-    user = {'username': 'Miguel'}
     posts = [{'author': {'username': 'John'}, 'body': 'Beautiful day in Portland!'},
              {'author': {'username': 'Susan'}, 'body': 'The Avengers movie was so cool!'},
              {'author': {'username': 'Ипполит'}, 'body': 'Какая гадость эта ваша заливная рыба!!'}]
@@ -44,7 +43,7 @@ def logout():
 def register():
     if current_user.is_authenticated:
         return redirect(url_for('index'))
-    form = RegistrationForm
+    form = RegistrationForm()
     if form.validate_on_submit():
         user = User(username=form.username.data, email=form.email.data)
         user.set_password(form.password.data)
