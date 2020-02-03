@@ -6,6 +6,7 @@ from flask_login import UserMixin
 from hashlib import md5
 
 class User(UserMixin, db.Model):
+    """User table"""
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(64), index=True, unique=True)
     email = db.Column(db.String(120), index=True, unique=True)
@@ -27,12 +28,14 @@ class User(UserMixin, db.Model):
         digest = md5(self.email.lower().encode('utf8')).hexdigest()
         return 'https://www.gravatar.com/avatar/{}?d=identicon&s={}'. format(digest, size)
 
+#user tracking
 @login.user_loader
 def load_user(id):
     return User.query.get(int(id))
 
 
 class Post(db.Model):
+    """Post table"""
     id = db.Column(db.Integer, primary_key=True)
     body = db.Column(db.String(140))
     timestamp = db.Column(db.DateTime, index=True, default=datetime.utcnow)
